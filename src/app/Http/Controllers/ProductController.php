@@ -21,13 +21,17 @@ class ProductController extends Controller
 
     public function update(Request $request, $code)
     {
+        if($request->input('code') != $code)
+        {
+            return response()->json(['success' => false, 'message' => 'Código inválido!']);
+        }
+
         $to_update_product = Product::findOrFail($code);
 
-        $to_update_product->code = $request->input('code');
         $to_update_product->url = $request->input('url');
         $to_update_product->creator = $request->input('creator');
         $to_update_product->product_name = $request->input('product_name');
-        $to_update_product->quantity = $request->input('quantity');
+        $to_update_product->quantity = intval($request->input('quantity'));
         $to_update_product->brands = $request->input('brands');
         $to_update_product->categories = $request->input('categories');
         $to_update_product->labels = $request->input('labels');

@@ -49,7 +49,7 @@ Artisan::command('products:import', function () {
                     $to_import_product->created_t = date('Y-m-d H:i:s', $product['created_t']);
                     $to_import_product->last_modified_t = date('Y-m-d H:i:s', $product['last_modified_t']);
                     $to_import_product->product_name = $product['product_name'];
-                    $to_import_product->quantity = $product['quantity'];
+                    $to_import_product->quantity = intval($product['quantity']);
                     $to_import_product->brands = $product['brands'];
                     $to_import_product->categories = $product['categories'];
                     $to_import_product->labels = $product['labels'];
