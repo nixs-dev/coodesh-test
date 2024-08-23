@@ -12,7 +12,7 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 Artisan::command('products:import', function () {
-    Cache::set("last_cronjob_execution", now());
+    Cache::set('last_cronjob_execution', now());
 
     $file_names_url = 'https://challenges.coode.sh/food/data/json/index.txt';
     $one_file_base_url = 'https://challenges.coode.sh/food/data/json/';
@@ -43,7 +43,6 @@ Artisan::command('products:import', function () {
                     $to_import_product = new Product;
     
                     $to_import_product->code = intval(str_replace('"', '', $product['code']));
-                    $to_import_product->status = 'published';
                     $to_import_product->imported_t = now();
                     $to_import_product->url = $product['url'];
                     $to_import_product->creator = $product['creator'];
@@ -66,7 +65,14 @@ Artisan::command('products:import', function () {
                     $to_import_product->main_category = $product['main_category'];
                     $to_import_product->image_url = $product['image_url'];
     
-                    Product::find($to_import_product->code) == null ? $to_import_product->save() : $to_import_product->update();
+                    if(Product::find($to_import_product->code) == null)
+                    {
+                        $to_import_product->status = 'published';
+                        $to_import_product->save();
+                    }
+                    else {
+                        $to_import_product->update();
+                    }
     
                     $imports_count++;
                 } else {
