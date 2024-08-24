@@ -24,7 +24,7 @@ Artisan::command('products:import', function () {
         $file_names = array_filter($file_names, fn($name) => $name !== '');
     }
     catch(ErrorException $exception) {
-        $this->error("Erro de conexão com o servidor de produtos!");
+        $this->error($exception->getMessage());
         return;
     }
 

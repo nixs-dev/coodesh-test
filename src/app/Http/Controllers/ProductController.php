@@ -7,13 +7,15 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public static function index(Request $request) {
+    public static function index(Request $request)
+    {
         $products = Product::forPage($request->page ?? 1, 50)->get();
 
         return response()->json(['success' => true, 'content' => $products]);
     }
 
-    public static function get(int $code) {
+    public static function get(int $code)
+    {
         $product = Product::findOrFail($code);
 
         return response()->json(['success' => true, 'content' => $product]);
@@ -21,8 +23,7 @@ class ProductController extends Controller
 
     public function update(Request $request, $code)
     {
-        if($request->input('code') != $code)
-        {
+        if ($request->input('code') != $code) {
             return response()->json(['success' => false, 'message' => 'Código inválido!']);
         }
 
@@ -52,7 +53,8 @@ class ProductController extends Controller
         return response()->json(['success' => true, 'content' => null], 200);
     }
 
-    public static function delete(int $code) {
+    public static function delete(int $code)
+    {
         $product = Product::findOrFail($code);
         $product->status = 'trash';
 
