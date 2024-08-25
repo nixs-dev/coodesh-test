@@ -1,7 +1,6 @@
 openapi: 3.0.1
 info:
   title: API de Produtos
-  description: Esta API permite a interação com a base de dados de produtos.
   version: 1.0.0
 paths:
   /api/:
