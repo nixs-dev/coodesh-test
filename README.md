@@ -23,9 +23,7 @@ REST API para utilizar os dados do projeto Open Food Facts, que é um banco de d
 
 1. **Clone o repositório:**
 
-   ```bash
-   git clone https://github.com/nixs-dev/coodesh-test.git
-   cd coodesh-test/src```
+   ```git clone https://github.com/nixs-dev/coodesh-test.git && cd coodesh-test/src```
 
 2. **Construa o contêiner:**
 
