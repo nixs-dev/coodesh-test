@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('created_t')->nullable();
             $table->timestamp('last_modified_t')->nullable();
             $table->string('product_name');
-            $table->integer('quantity')->nullable();
+            $table->string('quantity')->nullable();
             $table->string('brands')->nullable();
             $table->string('categories')->nullable();
             $table->string('labels')->nullable();

@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ProductTest extends TestCase
@@ -42,7 +40,7 @@ class ProductTest extends TestCase
             'image_url' => 'https://static.openfoodfacts.org/images/products/000/000/000/0017/front_fr.4.400.jpg',
         ];
 
-        $product['quantity'] = 10;
+        $product['quantity'] = '10';
 
         $response = $this->put("/api/products/". $product['code'], $product);
 
@@ -50,6 +48,6 @@ class ProductTest extends TestCase
 
         $updated_product = $this->get("/api/products/" . $product['code']);
 
-        $updated_product->assertJsonPath('content.quantity', 10);
+        $updated_product->assertJsonPath('content.quantity', $product['quantity']);
     }
 }

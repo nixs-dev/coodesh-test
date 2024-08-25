@@ -1,6 +1,193 @@
 openapi: 3.0.1
 info:
-  title: DotNet Challenge 20200902
-  description: CRUD Products
-  version: '0.1'
+  title: API de Produtos
+  description: Esta API permite a interação com a base de dados de produtos.
+  version: 1.0.0
+paths:
+  /api/:
+    get:
+      summary: Detalhes da API
+      description: Fornece detalhes sobre a API, incluindo status de conexão com a base de dados, horário da última execução do CRON, tempo online e uso de memória.
+      responses:
+        '200':
+          description: Detalhes da API
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  db_connection:
+                    type: boolean
+                    description: Status da conexão com a base de dados.
+                    example: true
+                  uptime:
+                    type: string
+                    format: date-time
+                    description: Horário da última execução do CRONJOB de importação.
+                    example: "24/08/2024 00:00:00"
+                  uptime:
+                    type: string
+                    description: Tempo que a API está online.
+                    example: "up 2 minutes"
+                  memory_usage:
+                    type: string
+                    description: Uso de memória da API.
+                    example: "128MB"
+  
+  /api/products/{code}:
+    put:
+      summary: Atualizar produto
+      description: Recebe atualizações do Projeto Web para um produto específico.
+      parameters:
+        - name: code
+          in: path
+          required: true
+          description: Código do produto.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Produto atualizado com sucesso
+        '404':
+          description: Produto não encontrado
 
+    delete:
+      summary: Mudar status do produto para trash
+      description: Muda o status de um produto para "trash".
+      parameters:
+        - name: code
+          in: path
+          required: true
+          description: Código do produto.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Status do produto atualizado para trash
+        '404':
+          description: Produto não encontrado
+
+    get:
+      summary: Obter informações de um produto
+      description: Retorna as informações de um produto da base de dados.
+      parameters:
+        - name: code
+          in: path
+          required: true
+          description: Código do produto.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Informação do produto obtida com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Produto não encontrado
+
+  /api/products:
+    get:
+      summary: Listar todos os produtos
+      description: Lista todos os produtos com paginação.
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: Número da página.
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Lista de produtos obtida com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 20221126
+        status:
+          type: string
+          description: "published|draft|trash"
+          example: "published"
+        imported_t:
+          type: string
+          format: date-time
+          example: "2020-02-07T16:00:00Z"
+        url:
+          type: string
+          example: "https://world.openfoodfacts.org/product/20221126"
+        creator:
+          type: string
+          example: "securita"
+        created_t:
+          type: integer
+          example: 1415302075
+        last_modified_t:
+          type: integer
+          example: 1572265837
+        product_name:
+          type: string
+          example: "Madalenas quadradas"
+        quantity:
+          type: string
+          example: "380 g (6 x 2 u.)"
+        brands:
+          type: string
+          example: "La Cestera"
+        categories:
+          type: string
+          example: "Lanches comida, Lanches doces, Biscoitos e Bolos, Bolos, Madalenas"
+        labels:
+          type: string
+          example: "Contem gluten, Contém derivados de ovos, Contém ovos"
+        cities:
+          type: string
+          example: ""
+        purchase_places:
+          type: string
+          example: "Braga,Portugal"
+        stores:
+          type: string
+          example: "Lidl"
+        ingredients_text:
+          type: string
+          example: "farinha de trigo, açúcar, óleo vegetal de girassol, clara de ovo, ovo, humidificante (sorbitol), levedantes químicos (difosfato dissódico, hidrogenocarbonato de sódio), xarope de glucose-frutose, sal, aroma"
+        traces:
+          type: string
+          example: "Frutos de casca rija,Leite,Soja,Sementes de sésamo,Produtos à base de sementes de sésamo"
+        serving_size:
+          type: string
+          example: "madalena 31.7 g"
+        serving_quantity:
+          type: number
+          example: 31.7
+        nutriscore_score:
+          type: integer
+          example: 17
+        nutriscore_grade:
+          type: string
+          example: "d"
+        main_category:
+          type: string
+          example: "en:madeleines"
+        image_url:
+          type: string
+          example: "https://static.openfoodfacts.org/images/products/20221126/front_pt.5.400.jpg"
